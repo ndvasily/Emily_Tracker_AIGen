@@ -24,7 +24,7 @@ def save_data(file_path, data):
 if 'feedings' not in st.session_state:
     st.session_state.feedings = load_data(FEEDING_FILE)
 if 'sleeps_total' not in st.session_state:
-    st.session_state.sleeps_total = 0.0
+    st.session_state.sleeps_total = load_data(SLEEP_FILE)
 if 'current_sleep_start' not in st.session_state:
     st.session_state.current_sleep_start = None
 
@@ -85,6 +85,8 @@ if st.session_state.current_sleep_start is None:
             st.success("Sleep started!")
         except ValueError:
             st.error("Invalid datetime format. Please use YYYY-MM-DD HH:MM.")
+        st.rerun()
+
 else:
     wake_time_str = st.text_input("Woke Up At (YYYY-MM-DD HH:MM)", value=datetime.now().strftime("%Y-%m-%d %H:%M"))
     if st.button("End Sleep"):
@@ -113,8 +115,10 @@ else:
                 st.session_state.current_sleep_start = None
                 st.success("Sleep logged!")
 
+
         except ValueError:
             st.error("Invalid datetime format. Please use YYYY-MM-DD HH:MM.")
+        st.rerun()
 
 # Display latest sleeps
 st.subheader("Latest Sleeps")
